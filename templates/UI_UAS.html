@@ -1,0 +1,60 @@
+{%extends 'base.html'%}
+{%block title%}Prediksi gambar{%endblock%}
+
+{%block content%}
+<h1 style="text-align : center; font-size : 90px; margin-top : 70px;"> Training Data </h1>
+
+<div class="row" style="margin-top : 120px">
+
+  <div class="col-sm-3" style="padding-left : 40px">
+    <div class="card" style="width:300px; background-color :#E7E7E7">
+      <h5 style="padding : 10px">Step1</h5>
+        <div class="card-body">
+          <p style="text-align : center">
+            Pilih data yang aka dilatih:
+            <br/>
+            <input type="file" id="myFile" size="50" style="font-size : 11px; padding-top: 7px;">
+          </p>
+        </div>
+      </div>
+  </div>
+
+  <div class="col-sm-3" style="padding-left : 35px">
+    <div class="card" style="width:300px; background-color :#E7E7E7">
+      <h5 style="padding : 10px">Step2</h5>
+        <div class="card-body">
+          <p style="text-align : center">
+            Minimum Error Yang Diinginkan:
+            <input type="number" id="ErrorRate" size="50">
+          </p>
+        </div>
+      </div>
+  </div>
+
+  <div class="col-sm-3" style="padding-left : 25px;">
+    <div class="card" style="width:300px; background-color :#E7E7E7">
+      <h5 style="padding : 10px">Step3</h5>
+        <div class="card-body">
+          <p style="text-align : center">
+            Iterasi yang dilakukan:
+            <br/>
+            <input type="number" id="iterasi" size="35">
+          </p>
+        </div>
+      </div>
+  </div>
+
+  <div class="col-sm-3" style="padding-right :5px">
+    <div class="card" style="width:300px; background-color :#E7E7E7">
+      <h5 style="padding : 10px">Step4</h5>
+        <div class="card-body">
+          <p style="text-align : center">
+            <button type="button" class="btn btn-success" style="padding : 14px">Mulai Training</button>
+          </p>
+        </div>
+      </div>
+  </div>
+
+
+</div>
+{%endblock%}
