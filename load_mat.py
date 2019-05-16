@@ -19,7 +19,7 @@ def unsharp(image, strength):
     sharp[sharp>255] = 255
     sharp[sharp<0] = 0
     
-    sharp = np.uint8(sharp)
+    sharp = np.float32(sharp)
     return sharp
 
 # Convert to Channel Last
@@ -38,7 +38,7 @@ for i in range(image_count):
     if num == 10:
         num = 0
     newTrainMat["y"].append(num)
-newTrainMat["y"] = np.array(newTrainMat["y"], dtype=np.uint8)
+newTrainMat["y"] = np.array(newTrainMat["y"], dtype=np.float32)
 newTestMat = {"X":[], "y": []}
 newTestMat["X"] = np.array(testMat["X"])
 newTestMat["y"] = np.array(testMat["y"])
