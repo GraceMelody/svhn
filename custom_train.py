@@ -74,9 +74,9 @@ def cnn_model_fn(features, labels, mode):
       mode=mode, loss=loss, eval_metric_ops=eval_metric_ops)
 
 
-def main(unused_argv):
+def main(dataset=dataset_path, steps=max_steps, accuracy=min_accuracy):
   # Open the file as readonly
-  h5f = h5py.File('SVHN_grey.h5', 'r')
+  h5f = h5py.File(dataset_path, 'r')
   
   # Load the training, test and validation set
   X_train = h5f['X_train'][:]
@@ -88,7 +88,6 @@ def main(unused_argv):
   
   # Close this file
   h5f.close()
-  print('ladaad',y_test[2])
   print('Training set', X_train.shape, y_train.shape)
   print('Validation set', X_val.shape, y_val.shape)
   print('Test set', X_test.shape, y_test.shape)
@@ -114,8 +113,8 @@ def main(unused_argv):
   eval_input_fn = tf.estimator.inputs.numpy_input_fn(
       x={"x": X_test}, y=y_test, num_epochs=1, shuffle=False)
 
-  hook = tf.contrib.estimator.stop_if_higher_hook(svhn_classifier, "accuracy", 0.19)
-  train_spec = tf.estimator.TrainSpec(input_fn=train_input_fn, max_steps=100,hooks=[hook])
+  hook = tf.contrib.estimator.stop_if_higher_hook(svhn_classifier, "accuracy", min_accuracy)
+  train_spec = tf.estimator.TrainSpec(input_fn=train_input_fn, max_steps=max_steps,hooks=[hook])
   eval_spec = tf.estimator.EvalSpec(input_fn=eval_input_fn)
   tf.estimator.train_and_evaluate(svhn_classifier, train_spec, eval_spec)
 #   svhn_classifier.train(
@@ -131,7 +130,3 @@ def main(unused_argv):
   # final = next(predict_results)
   # print('Class detected: ',final['classes'])
   # print('Probability: ',max(final['probabilities'])*100,'%')
-
-
-if __name__ == "__main__":
-  tf.app.run()
