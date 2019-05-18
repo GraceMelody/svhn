@@ -76,7 +76,7 @@ def cnn_model_fn(features, labels, mode):
 
 def main(dataset, steps, accuracy):
   # Open the file as readonly
-  h5f = h5py.File(dataset_path, 'r')
+  h5f = h5py.File(dataset, 'r')
   
   # Load the training, test and validation set
   X_train = h5f['X_train'][:]
@@ -113,8 +113,8 @@ def main(dataset, steps, accuracy):
   eval_input_fn = tf.estimator.inputs.numpy_input_fn(
       x={"x": X_test}, y=y_test, num_epochs=1, shuffle=False)
 
-  hook = tf.contrib.estimator.stop_if_higher_hook(svhn_classifier, "accuracy", min_accuracy)
-  train_spec = tf.estimator.TrainSpec(input_fn=train_input_fn, max_steps=max_steps,hooks=[hook])
+  hook = tf.contrib.estimator.stop_if_higher_hook(svhn_classifier, "accuracy", accuracy)
+  train_spec = tf.estimator.TrainSpec(input_fn=train_input_fn, max_steps=steps,hooks=[hook])
   eval_spec = tf.estimator.EvalSpec(input_fn=eval_input_fn)
   tf.estimator.train_and_evaluate(svhn_classifier, train_spec, eval_spec)
 #   svhn_classifier.train(
