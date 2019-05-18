@@ -22,75 +22,47 @@ def unsharp(image, strength):
     sharp = np.float32(sharp)
     return sharp
 
-# Convert to Channel Last
-trainMat["X"] = trainMat["X"].transpose((3,0,1,2))
-testMat["X"] = testMat["X"].transpose((3,0,1,2))
-image_count = len(trainMat["X"])
 
-val_size = image_count // 10
+def preprocess(mat):
+    # Convert to Channel Last
+    mat["X"] = mat["X"].transpose((3,0,1,2))
+    newMat = {"X": [], "y": []}
 
-newTrainMat = {"X":[], "y": []}
-newTestMat = {"X":[], "y": []}
+    # Training Data
+    for i in range(len(mat["X"])):
+        # Convert to B/W
+        newMat["X"].append(np.array([cv2.cvtColor(mat["X"][i], cv2.COLOR_BGR2GRAY)]).transpose((1,2,0)))
 
-# Training Data
-for i in range(len(trainMat["X"])):
-    # Convert to B/W
-    newTrainMat["X"].append(np.array([cv2.cvtColor(trainMat["X"][i], cv2.COLOR_BGR2GRAY)]).transpose((1,2,0)))
+        num = mat["y"][i]
+        if num == 10:
+            num = 0
+        newMat["y"].append(num)
+        newMat["X"][i] = newMat["X"][i].transpose(2,0,1)
 
-    num = trainMat["y"][i]
-    if num == 10:
-        num = 0
-    newTrainMat["y"].append(num)
-    newTrainMat["X"][i] = newTrainMat["X"][i].transpose(2,0,1)
+        # Equalize Hist
+        newMat["X"][i][0] = cv2.equalizeHist(newMat["X"][i][0])
 
-    # Equalize Hist
-    newTrainMat["X"][i][0] = cv2.equalizeHist(newTrainMat["X"][i][0])
+        # Unsharp Mask
+        newMat["X"][i][0] = unsharp(newMat["X"][i][0], 0.1)
 
-    # Unsharp Mask
-    newTrainMat["X"][i][0] = unsharp(newTrainMat["X"][i][0], 0.1)
+        newMat["X"][i] = newMat["X"][i].transpose(1,2,0)
+        newMat["X"][i] = np.array(newMat["X"][i], dtype=np.float32)
+        newMat["X"][i] /= 255
 
-    newTrainMat["X"][i] = newTrainMat["X"][i].transpose(1,2,0)
-    newTrainMat["X"][i] = np.array(newTrainMat["X"][i], dtype=np.float32)
-    newTrainMat["X"][i] /= 255
+    newMat["X"] = np.array(newMat["X"])
+    newMat["y"] = np.array(newMat["y"], dtype=np.uint8)
+    newMat["y"].flatten()
+    y_hot = np.zeros((len(newMat["y"]), 10), dtype=np.float32)
+    y_hot[np.arange(len(newMat["y"])), newMat["y"]] = 1.0
+    newMat["y"] = np.array(y_hot, dtype=np.float32)
+    return newMat
 
-newTrainMat["X"] = np.array(newTrainMat["X"])
+newTrainMat = preprocess(trainMat)
+newTestMat = preprocess(testMat)
 
-# Test data
-for i in range(len(testMat["X"])):
-    # Convert to B/W
-    newTestMat["X"].append(np.array([cv2.cvtColor(testMat["X"][i], cv2.COLOR_BGR2GRAY)]).transpose((1,2,0)))
+val_size = len(newTrainMat) // 10
 
-    num = testMat["y"][i]
-    if num == 10:
-        num= 0
-    newTestMat["y"].append(num)
-    newTestMat["X"][i] = newTestMat["X"][i].transpose(2,0,1)
 
-    # Equalize Hist
-    newTestMat["X"][i][0] = cv2.equalizeHist(newTestMat["X"][i][0])
-
-    # Unsharp Mask
-    newTestMat["X"][i][0] = unsharp(newTestMat["X"][i][0], 0.1)
-
-    newTestMat["X"][i] = newTestMat["X"][i].transpose(1,2,0)
-    newTestMat["X"][i] = np.array(newTestMat["X"][i], dtype=np.float32)
-    newTestMat["X"][i] /= 255
-
-newTestMat["X"] = np.array(newTestMat["X"])
-
-newTrainMat["y"] = np.array(newTrainMat["y"], dtype=np.uint8)
-newTrainMat["y"].flatten()
-y_train_hot = np.zeros((len(newTrainMat["y"]), 10), dtype=np.float32)
-y_train_hot[np.arange(len(newTrainMat["y"])), newTrainMat["y"]] = 1.0
-newTrainMat["y"] = np.array(y_train_hot, dtype=np.float32)
-
-newTestMat["y"] = np.array(newTestMat["y"], dtype=np.uint8)
-newTestMat["y"].flatten()
-y_test_hot = np.zeros((len(newTestMat["y"]), 10), dtype=np.float32)
-y_test_hot[np.arange(len(newTestMat["y"])), newTestMat["y"]] = 1.0
-newTestMat["y"] = np.array(y_test_hot, dtype=np.float32)
-
-print(newTrainMat["y"].shape)
 # Saves to .h5py
 f = h5py.File('SVHN_grey.h5', 'w')
 
