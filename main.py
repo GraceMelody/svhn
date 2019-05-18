@@ -6,7 +6,8 @@ from werkzeug.wrappers import response
 import json
 from CNN import load_mat
 from CNN import custom_train
-# from CNN import cnn
+import os
+from CNN import cnn
 
 app = Flask(__name__)
 os.makedirs(os.path.join(app.instance_path, 'Data_Training'), exist_ok=True)
@@ -15,18 +16,26 @@ os.makedirs(os.path.join(app.instance_path, 'Img_Predict'), exist_ok=True)
 @app.route("/", methods=['POST', 'GET'])
 def home():
     if request.method == 'POST':
+        #get every form input
         iterasi = request.form['Iterasi']
         akurasi = request.form['Akurasi']
         strength = request.form['Strength']
-        file = request.files['Latih']
-        # filename = secure_filename(file.filename)
-        load_mat.main(file,strength)
+        nama = request.form['SaveAs']
+        path_train_mat = request.files['Latih']
+        path_test_mat = request.files['Test']
+
+        #load mat file
+        load_mat.main(path_train_mat,path_test_mat,int(strength))
         print('done')
         path_svhn = 'SVHN_grey.h5'
-        custom_train.main(path_svhn,'CNN/test_32x32.mat', int(iterasi),float(akurasi))
-        # file.save(os.path.join(app.instance_path, 'Data_Training', secure_filename(file.filename)))
-        print("Iterasi :"+iterasi)
-        path_train = 'train_eval/svhnet/checkpoint'
+
+        #define unique model folder
+        counter = len(os.listdir('instance/model/'))
+        counter += 1
+        model_name = str(counter)+nama
+        #train the model using existing h5 file
+        custom_train.main(path_svhn, int(iterasi),float(akurasi),model_name)
+        path_train = model_name
         return jsonify({'train':path_train})
     else :
         return render_template('UI_UAS.html')
@@ -34,27 +43,19 @@ def home():
 @app.route('/predict', methods=['POST', 'GET'])
 def predict():
     if(request.method == 'POST'):
-        print('test')
+        model = str(request.form['model'])
+        image = request.files['img']
+        if(model == 'default'):
+            print('CNN/test/svhnet')
+            # data = cnn.main(image,'CNN/test/svhnet')
+        else:
+            print('instance/model/'+model+'/svhnet')
+            # data = cnn.main(image,'instance/model/'+model+'/svhnet')
         return jsonify(test='test')
+        # return jsonify(detect=data[0],accuracy=data[1])
     else:
-        return render_template('prediksi.html')
-
-@app.route('/latih/training', methods=['POST', 'GET'])
-def uploadData():
-    if request.method == 'POST':
-            iterasi = request.form['Iterasi']
-            akurasi = request.form['Akurasi']
-            strength = request.form['Strength']
-            file = request.files['Latih']
-            # filename = secure_filename(file.filename)
-            load_mat.main(file,strength)
-            print('done')
-            path_svhn = 'CNN/SVHN_grey.h5'
-            custom_train.main(path_svhn, int(iterasi),float(akurasi))
-            # file.save(os.path.join(app.instance_path, 'Data_Training', secure_filename(file.filename)))
-            print("Iterasi :"+iterasi)
-            path_train = 'train_eval/svhnet/checkpoint'
-            return jsonify(train=path_train)
+        model = os.listdir('instance/model/')
+        return render_template('prediksi.html',model=model)
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -31,7 +31,10 @@
                         Preset Model:
                         <br/>
                         <select name='model' size='5' style="width:75%;margin:auto">
-                          <option value=''>Default</option> 
+                          <option value='default'>Default</option> 
+                          {%for item in model%}
+                            <option value={{item}}>{{item}}</option>
+                          {%endfor%}
                         </select>
                     </p>
                 </div>
@@ -44,7 +47,7 @@
                 <p style="text-align : center">
                     Pilih Gambar yang akan diuji:
                     <br/>
-                      <input type="file" id="imgPredik" size="50" style="font-size : 11px" name="test" accept="image/*" onchange="readURL(this)">
+                      <input type="file" name='img' id="imgPredik" size="50" style="font-size : 11px" name="test" accept="image/*" onchange="readURL(this)">
                     <img id="blah" src="#" alt="your image" style="padding-top : 10px"/>
                   </p>
             </div>
