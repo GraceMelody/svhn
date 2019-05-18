@@ -74,55 +74,24 @@ def cnn_model_fn(features, labels, mode):
       mode=mode, loss=loss, eval_metric_ops=eval_metric_ops)
 
 
-def main(unused_argv):
+def main(model):
   # Open the file as readonly
   h5f = h5py.File('SVHN_grey.h5', 'r')
   
   # Load the training, test and validation set
   X_train = h5f['X_train'][:]
-  y_train = h5f['y_train'][:]
-  X_test = h5f['X_test'][:]
-  y_test = h5f['y_test'][:]
-  X_val = h5f['X_val'][:]
-  y_val = h5f['y_val'][:]
   
   # Close this file
   h5f.close()
-  print('ladaad',y_test[2])
-  print('Training set', X_train.shape, y_train.shape)
-  print('Validation set', X_val.shape, y_val.shape)
-  print('Test set', X_test.shape, y_test.shape)
 
   svhn_classifier = tf.estimator.Estimator(
-      model_fn=cnn_model_fn, model_dir="test/svhnet")
+      model_fn=cnn_model_fn, model_dir=model)
 
-#   tensors_to_log = {"probabilities": "softmax_tensor"}
-#   logging_hook = tf.train.LoggingTensorHook(
-#       tensors=tensors_to_log, every_n_iter=50)
-
-#   # Train the model
-#   train_input_fn = tf.estimator.inputs.numpy_input_fn(
-#       x={'x':X_train},
-#       y=y_train,
-#       batch_size=512,
-#       num_epochs=100,
-#       shuffle=True)
-#   svhn_classifier.train(
-#       input_fn=train_input_fn,
-#       steps=5000,
-#       hooks=[logging_hook])
-
-#   # Evaluate the model and print results
-#   eval_input_fn = tf.estimator.inputs.numpy_input_fn(
-#       x={"x": X_test}, y=y_test, num_epochs=1, shuffle=False)
   predict_input_fn = tf.estimator.inputs.numpy_input_fn(
-      x={"x": X_test[2]}, num_epochs=1, shuffle=False)
+      x={"x": X_train[0]}, num_epochs=1, shuffle=False)
   predict_results = svhn_classifier.predict(input_fn=predict_input_fn,)
   
-  final = next(predict_results)
-  print('Class detected: ',final['classes'])
-  print('Probability: ',max(final['probabilities'])*100,'%')
-
-
-if __name__ == "__main__":
-  tf.app.run()
+  # final = next(predict_results)
+  # print('Class detected: ',final['classes'])
+  # print('Probability: ',max(final['probabilities'])*100,'%')
+  return next(predict_results)
