@@ -22,8 +22,8 @@ def home():
         # filename = secure_filename(file.filename)
         load_mat.main(file,strength)
         print('done')
-        path_svhn = 'CNN/SVHN_grey.h5'
-        custom_train.main(path_svhn, int(iterasi),float(akurasi))
+        path_svhn = 'SVHN_grey.h5'
+        custom_train.main(path_svhn,'CNN/test_32x32.mat', int(iterasi),float(akurasi))
         # file.save(os.path.join(app.instance_path, 'Data_Training', secure_filename(file.filename)))
         print("Iterasi :"+iterasi)
         path_train = 'train_eval/svhnet/checkpoint'
@@ -31,16 +31,13 @@ def home():
     else :
         return render_template('UI_UAS.html')
 
-@app.route('/predict')
+@app.route('/predict', methods=['POST', 'GET'])
 def predict():
-    return render_template('prediksi.html')
-
-@app.route('/predict/preprocessing', methods=['POST'])
-def uploadImage():
-    file = request.files['test']
-     # filename = secure_filename(file.filename)
-    file.save(os.path.join(app.instance_path, 'Img_Predict', secure_filename(file.filename)))
-    return '',204
+    if(request.method == 'POST'):
+        print('test')
+        return jsonify(test='test')
+    else:
+        return render_template('prediksi.html')
 
 @app.route('/latih/training', methods=['POST', 'GET'])
 def uploadData():
