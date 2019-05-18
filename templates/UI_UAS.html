@@ -10,7 +10,7 @@
       <h5 style="padding : 10px">Step1</h5>
         <div class="card-body">
           <p style="text-align : center">
-            Pilih data yang aka dilatih:
+            Pilih data yang akan dilatih:
             <br/>
             <input type="file" id="dataTrain" name="Latih" size="50" style="font-size : 11px; padding-top: 7px;">
           </p>
@@ -61,7 +61,21 @@
   <div style="padding-left : 625px; padding-top : 50px;">
    <button type="submit" id="mulai" class="btn btn-success">Mulai Training</button>
   </div>
-
 </form>
-<span id="result">?</span>
+
+<br/>
+<p style="margin-left : 450px;">Lokasi file hasil training: <span id="result">?</span></p>
+
+
+<br/>
+<div id="loading_predict" style="display: none;">
+  <!--<img src="{{ url_for('static', filename='loading.gif')}}" title="Predicting data">-->
+  <h2>Training ...</h2>
+</div>
+
+<div class="progress">
+  <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+</div>
+
+
 {%endblock%}
