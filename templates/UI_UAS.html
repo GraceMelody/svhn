@@ -4,7 +4,7 @@
 <h1 style="text-align : center; font-size : 90px; margin-top : 70px;"> Training Data </h1>
 
 <form id="form-upload" action='/' method='POST' enctype = "multipart/form-data">
-<div class="row" style="margin-top : 120px">
+<div class="row" style="margin-top : 80px">
   <div class="col-sm-3" style="padding-left : 40px">
     <div class="card" style="width:300px; background-color :#E7E7E7">
       <h5 style="padding : 10px">Step1</h5>
@@ -23,8 +23,9 @@
       <h5 style="padding : 10px">Step2</h5>
         <div class="card-body">
           <p style="text-align : center">
-            Min Akurasi Yang Diinginkan (%):
-            <input type="number" id="ErrorRate" name="Akurasi" size="50" min="0.00" max="1" step=0.01>
+            Pilih data test:
+            <br/>
+            <input type="file" id="dataTest" name="Test" size="50" style="font-size : 11px; padding-top: 7px;">
           </p>
         </div>
       </div>
@@ -35,9 +36,9 @@
       <h5 style="padding : 10px">Step3</h5>
         <div class="card-body">
           <p style="text-align : center">
-            Iterasi yang dilakukan:
+            Simpan Dengan Nama:
             <br/>
-            <input type="number" name="Iterasi"  id="iterasi" size="35">
+            <input type="text" name="SaveAs"  id="SaveAs" size="20">
           </p>
         </div>
       </div>
@@ -48,9 +49,9 @@
       <h5 style="padding : 10px">Step4</h5>
         <div class="card-body">
           <p style="text-align : center">
-            Strength:
+            Iterasi yang dilakukan:
             <br/>
-            <input type="number" name="Strength"  id="Strength" size="50">
+            <input type="number" name="Iterasi"  id="iterasi" size="35" min="0">
           </p>
         </div>
       </div>
@@ -58,17 +59,60 @@
 
 </div>
 
-  <div style="padding-left : 625px; padding-top : 50px;">
-   <button type="submit" id="mulai" class="btn btn-success">Mulai Training</button>
+  <div class="row" style="margin-top : 20px">
+  <div class="col-sm-3" style="padding-left : 40px">
+    <div class="card" style="width:300px; background-color :#E7E7E7">
+      <h5 style="padding : 10px">Step5</h5>
+        <div class="card-body">
+          <p style="text-align : center">
+            Minimum Akurasi Yang Diinginkan:
+            <input type="number" id="ErrorRate" name="Akurasi" size="50" min="0.00" max="1" step=0.01>
+          </p>
+        </div>
+      </div>
   </div>
+
+  <div class="col-sm-3" style="padding-left : 35px">
+    <div class="card" style="width:300px; background-color :#E7E7E7">
+      <h5 style="padding : 10px">Step6</h5>
+        <div class="card-body">
+          <p style="text-align : center">
+            Strength:
+            <br/>
+            <input type="number" name="Strength"  id="Strength" size="50" min="0">
+          </p>
+        </div>
+      </div>
+  </div>
+
+  <div class="col-sm-3" style="padding-left : 25px;">
+    <div class="card" style="width:300px; background-color :#E7E7E7">
+      <h5 style="padding : 10px">Step7</h5>
+        <div class="card-body">
+          <p style="text-align : center">
+            <button type="submit" id="mulai" class="btn btn-success">Mulai Training</button>
+          </p>
+        </div>
+      </div>
+  </div>
+
+  <div class="col-sm-3" style="padding-right :5px">
+    <div class="card" style="width:300px; background-color :#E7E7E7">
+      <h5 style="padding : 10px">Step8</h5>
+        <div class="card-body">
+          <p style="text-align : center">
+           Nama file hasil training: <br/>
+            <span id="result">?</span>
+          </p>
+        </div>
+      </div>
+  </div>
+
+</div>
 </form>
 
 <br/>
-<p style="margin-left : 450px;">Lokasi file hasil training: <span id="result">?</span></p>
-
-
-<br/>
-<div id="loading_predict" style="display: none;">
+<div id="loading_training" style="display: none;">
   <!--<img src="{{ url_for('static', filename='loading.gif')}}" title="Predicting data">-->
   <h2>Training ...</h2>
 </div>
