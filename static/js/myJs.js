@@ -1,4 +1,5 @@
 $(document).ready(function() {
+  $('#result').hide()
   $('#form-upload').on('submit', function(evt) {
     evt.preventDefault();
     var formData = new FormData($('form')[0]);
@@ -63,7 +64,9 @@ $(document).ready(function() {
         alert('Predict Completed!');
         $("#loading_predict").hide();
         $('#progressBar').attr('aria-valuenow', '').css('width', '0%').text('0%');
-        $('#result').text(data.train);
+        $('#result').show();
+        $('#acc').text(data.accuracy);
+        $('#detected').text(data.class)
       }
     });
   });

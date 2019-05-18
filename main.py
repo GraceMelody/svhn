@@ -8,6 +8,9 @@ from CNN import load_mat
 from CNN import custom_train
 import os
 from CNN import cnn
+from CNN import convert_mat
+import h5py
+from scipy.io import loadmat
 
 app = Flask(__name__)
 os.makedirs(os.path.join(app.instance_path, 'Data_Training'), exist_ok=True)
@@ -45,14 +48,30 @@ def predict():
     if(request.method == 'POST'):
         model = str(request.form['model'])
         image = request.files['img']
+        path = os.path.join('instance/Img_Predict/', image.filename)
+        image.save(path)
         if(model == 'default'):
-            print('CNN/test/svhnet')
-            # data = cnn.main(image,'CNN/test/svhnet')
+            convert_mat.img2mat(path)
+            mat = loadmat('predict.mat')
+            newMat = load_mat.preprocess(mat,int(1))
+            f = h5py.File('SVHN_grey.h5', 'w')
+            f.create_dataset('X_train', data=newMat["X"])
+            f.close()
+            data = cnn.main('CNN/test/svhnet')
+            accuracy = str(max(data['probabilities'])*100)+'%'
+            detected = str(data['classes'])
+            return jsonify({'class':detected,'accuracy':accuracy})
         else:
-            print('instance/model/'+model+'/svhnet')
-            # data = cnn.main(image,'instance/model/'+model+'/svhnet')
-        return jsonify(test='test')
-        # return jsonify(detect=data[0],accuracy=data[1])
+            convert_mat.img2mat(image)
+            mat = loadmat('predict.mat')
+            newMat = load_mat.preprocess(mat)
+            f = h5py.File('SVHN_grey.h5', 'w')
+            f.create_dataset('X_train', data=newMat["X"])
+            f.close()
+            data = cnn.main('instance/model/'+model+'/svhnet')
+            accuracy = str(max(data['probabilities'])*100)+'%'
+            detected = str(data['classes'])
+            return jsonify({'class':detected,'accuracy':accuracy})
     else:
         model = os.listdir('instance/model/')
         return render_template('prediksi.html',model=model)

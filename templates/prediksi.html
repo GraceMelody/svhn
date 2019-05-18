@@ -31,7 +31,7 @@
                         Preset Model:
                         <br/>
                         <select name='model' size='5' style="width:75%;margin:auto">
-                          <option value='default'>Default</option> 
+                          <option value='default' selected>Default</option> 
                           {%for item in model%}
                             <option value={{item}}>{{item}}</option>
                           {%endfor%}
@@ -61,6 +61,10 @@
               <p style="text-align : center">
                 Hasil prediksi:
               </p>
+              <div id='result'>
+                <p>Angka terdeteksi: </p><span id='detected'></span>
+                <p>Akurasi: </p><span id='acc'></span>
+              </div>
             </div>
           </div>
       </div>
