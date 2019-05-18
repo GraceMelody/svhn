@@ -74,7 +74,7 @@ def cnn_model_fn(features, labels, mode):
       mode=mode, loss=loss, eval_metric_ops=eval_metric_ops)
 
 
-def main(dataset=dataset_path, steps=max_steps, accuracy=min_accuracy):
+def main(dataset, steps, accuracy):
   # Open the file as readonly
   h5f = h5py.File(dataset_path, 'r')
   
