@@ -29,7 +29,7 @@ def home():
         path_test_mat = request.files['Test']
 
         #load mat file
-        load_mat.main(path_train_mat,path_test_mat,int(strength))
+        load_mat.main(path_train_mat,path_test_mat,float(strength))
         print('done')
         path_svhn = 'SVHN_grey.h5'
 
@@ -53,7 +53,7 @@ def predict():
         image.save(path)
         convert_mat.img2mat(path)
         mat = loadmat('predict.mat')
-        newMat = load_mat.preprocess(mat,int(1))
+        newMat = load_mat.preprocess(mat,float(1))
         f = h5py.File('SVHN_grey.h5', 'w')
         f.create_dataset('X_train', data=newMat["X"])
         f.close()
