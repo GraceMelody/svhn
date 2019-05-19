@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+
+    <title>Prediksi UI</title>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" href="/">Training</a>
+    </li>
+    <li class="nav-item active">
+      <a class="nav-link" href="predict">Pengujian</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Help</a>
+    </li>
+  </ul>
+</nav>
+
+<h1 style="text-align : center; font-size : 90px; margin-top : 70px;"> Pengujian Data </h1>
+
+<div class="row" style="margin-top : 120px">
+
+  <div class="col-sm-3" style="padding-left : 40px">
+    <div class="card" style="width:300px; background-color :#E7E7E7">
+      <h5>Step1</h5>
+        <div class="card-body">
+          <p style="text-align : center">
+            Pilih Gambar yang akan diuji:
+            <br/>
+            <input type="file" id="myFile" size="50" style="font-size : 11px">
+          </p>
+        </div>
+      </div>
+  </div>
+
+  <div class="col-sm-3" style="padding-left : 35px">
+    <div class="card" style="width:300px; background-color :#E7E7E7">
+      <h5>Step2</h5>
+        <div class="card-body">
+          <p style="text-align : center">
+            Minimum Error Yang Diinginkan:
+            <input type="number" id="ErrorRate" size="50">
+          </p>
+        </div>
+      </div>
+  </div>
+
+  <div class="col-sm-3" style="padding-left : 25px;">
+    <div class="card" style="width:300px; background-color :#E7E7E7">
+      <h5>Step3</h5>
+        <div class="card-body">
+          <p style="text-align : center">
+            Iterasi yang dilakukan:
+            <br/>
+            <input type="number" id="iterasi" size="35">
+          </p>
+        </div>
+      </div>
+  </div>
+
+  <div class="col-sm-3" style="padding-right :5px">
+    <div class="card" style="width:300px; background-color :#E7E7E7">
+      <h5>Step4</h5>
+        <div class="card-body">
+          <p style="text-align : center">
+            <button type="button" class="btn btn-success" style="padding : 14px">Mulai Prediksi</button>
+          </p>
+        </div>
+      </div>
+  </div>
+
+
+</div>
+
+</body>
+</html>
