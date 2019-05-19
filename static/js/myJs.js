@@ -29,7 +29,7 @@ $(document).ready(function() {
       contentType:false,
       success:function(data) {
         alert('Training Completed!');
-        $("#loading_predict").hide();
+        $("#loading_training").hide();
         $('#progressBar').attr('aria-valuenow', '').css('width', '0%').text('0%');
         $('#result').text(data.train);
       }
@@ -48,7 +48,7 @@ $(document).ready(function() {
             var percent = Math.round((e.loaded / e.total) * 100);
             $('#progressBar').attr('aria-valuenow', percent).css('width', percent + '%').text(percent + '%');
             if (percent === 100) {
-              $("#loading_training").show();
+              $("#loading_predict").show();
 //              $("#progressBar").hide();
             }
           }
