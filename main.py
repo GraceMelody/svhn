@@ -15,6 +15,7 @@ from scipy.io import loadmat
 app = Flask(__name__)
 os.makedirs(os.path.join(app.instance_path, 'Data_Training'), exist_ok=True)
 os.makedirs(os.path.join(app.instance_path, 'Img_Predict'), exist_ok=True)
+os.makedirs(os.path.join(app.instance_path, 'model'), exist_ok=True)
 
 @app.route("/", methods=['POST', 'GET'])
 def home():
