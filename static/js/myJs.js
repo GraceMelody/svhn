@@ -32,6 +32,7 @@ $(document).ready(function() {
         $("#loading_training").hide();
         $('#progressBar').attr('aria-valuenow', '').css('width', '0%').text('0%');
         $('#result').text(data.train);
+        $('#result').show();
       }
     });
   });
