@@ -51,28 +51,19 @@ def predict():
         image = request.files['img']
         path = os.path.join('instance/Img_Predict/', image.filename)
         image.save(path)
+        convert_mat.img2mat(path)
+        mat = loadmat('predict.mat')
+        newMat = load_mat.preprocess(mat,int(1))
+        f = h5py.File('SVHN_grey.h5', 'w')
+        f.create_dataset('X_train', data=newMat["X"])
+        f.close()
         if(model == 'default'):
-            convert_mat.img2mat(path)
-            mat = loadmat('predict.mat')
-            newMat = load_mat.preprocess(mat,int(1))
-            f = h5py.File('SVHN_grey.h5', 'w')
-            f.create_dataset('X_train', data=newMat["X"])
-            f.close()
             data = cnn.main('CNN/test/svhnet')
-            accuracy = str(max(data['probabilities'])*100)+'%'
-            detected = str(data['classes'])
-            return jsonify({'class':detected,'accuracy':accuracy})
         else:
-            convert_mat.img2mat(image)
-            mat = loadmat('predict.mat')
-            newMat = load_mat.preprocess(mat)
-            f = h5py.File('SVHN_grey.h5', 'w')
-            f.create_dataset('X_train', data=newMat["X"])
-            f.close()
             data = cnn.main('instance/model/'+model+'/svhnet')
-            accuracy = str(max(data['probabilities'])*100)+'%'
-            detected = str(data['classes'])
-            return jsonify({'class':detected,'accuracy':accuracy})
+        accuracy = str(max(data['probabilities'])*100)+'%'
+        detected = str(data['classes'])
+        return jsonify({'class':detected,'accuracy':accuracy})
     else:
         model = os.listdir('instance/model/')
         return render_template('prediksi.html',model=model)
