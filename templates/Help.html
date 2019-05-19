@@ -1,0 +1,77 @@
+{%extends 'base.html'%}
+{%block title%}Prediksi gambar{%endblock%}
+{%block content%}
+
+<h1 style="text-align : center; font-size : 90px; margin-top : 70px;"> Help </h1>
+
+<div style="font-size:20px;">
+<button class="accordion" style="margin-top : 80px"><h6>Tentang Aplikasi</h6></button>
+<div class="panel">
+  <p style="text-align : center; padding-top : 16px; padding-bottom :16px">Aplikasi : Pengenalan angka pada nomor rumah.</p>
+  <p style="text-align : center; padding-bottom :16px">Pre-processing : Unsharp Mask.</p>
+  <p style="text-align : center; padding-bottom :16px">Proses Klasifikasi : CNN (Convolutionan Neural Network).</p>
+  <p style="text-align : center; padding-bottom :16px">Oleh : Evans Jahja, Grace M.k, Reinaldo S.G, Edward H.M, Muh. Lucki W.</p>
+</div>
+
+<button class="accordion"><h6>Bagaimana Training Data ?</h6></button>
+<div class="panel">
+  <div style="text-align : center">
+  <p style="padding-top : 16px;">1. Pilih menu Training.</p>
+      <img src="{{url_for('static', filename='image/train1.png')}}" alt="train1" width="250" height= "150" style="padding-bottom : 16px">
+  <p>2. Tampilan halaman untuk proses training</p>
+      <img src="{{url_for('static', filename='image/train2.png')}}" alt="train2" width="400" height= "250" style="padding-bottom : 16px">
+  <p>3. Pilih file yang akan dilatih pada Step 1, kemudian untuk data pengujinya pilih pada Step2. Simpan hasil model training dengan nama yang diinputkan pada Step3. </p>
+      <img src="{{url_for('static', filename='image/train3.png')}}" alt="train3" width="400" height= "250" style="padding-bottom : 16px">
+  <p>4. Tentukan nilai iterasi/epoch, minimum akurasi, dan strength. </p>
+      <img src="{{url_for('static', filename='image/train4.png')}}" alt="train4" width="400" height= "250" style="padding-bottom : 16px">
+  <p>5. Pastikan Step1 hingga Step6 sudah terisi sesuai dengan yang diinginkan, sebelum mengklik tombol "Mulai Training". </p>
+      <img src="{{url_for('static', filename='image/train5.png')}}" alt="train5" width="500" height= "250" style="padding-bottom : 16px">
+  <p>6. Klik tombol "Mulai Training", maka file mulai diproses. </p>
+      <img src="{{url_for('static', filename='image/train6.png')}}" alt="train6" width="400" height= "250" style="padding-bottom : 16px">
+  <p>7. Proses training dimulai. </p>
+      <img src="{{url_for('static', filename='image/train7.png')}}" alt="train7" width="400" height= "300" style="padding-bottom : 16px">
+  <p>8. Proses training Selesai. </p>
+      <img src="{{url_for('static', filename='image/train8.png')}}" alt="train8" width="400" height= "200" style="padding-bottom : 16px">
+  <p>9. Hasil Akhir Model. Angka didepannya merupakan nomer dokumen saat tersimpan, agar setiap hasil model unik meskipun diberi nama sama.   </p>
+      <img src="{{url_for('static', filename='image/train8.5.png')}}"alt="train9" width="400" height= "250" style="padding-bottom : 16px">
+    </div>
+</div>
+
+<button class="accordion"><h6>Bagaimana Uji Prediksi Gambar ?</h6></button>
+<div class="panel">
+  <div style="text-align : center">
+  <p style="padding-top : 16px;">1. Pilih menu Predict.</p>
+      <img src="{{url_for('static', filename='image/predict1.png')}}" alt="predict1" width="250" height= "150" style="padding-bottom : 16px">
+  <p>2. Tampilan halaman untuk proses predict</p>
+      <img src="{{url_for('static', filename='image/predict2.png')}}" alt="predict2" width="400" height= "250" style="padding-bottom : 16px">
+  <p>3. Pilih model yang digunakan. User dapat memilih model hasil Training ataupun menggunakan "Default". </p>
+      <img src="{{url_for('static', filename='image/predict3.png')}}" alt="predict3" width="400" height= "250" style="padding-bottom : 16px">
+  <p>4. Pilih gambar yang ingin di predict, kemudian klik "Submit".   </p>
+      <img src="{{url_for('static', filename='image/predict4.png')}}" alt="predict4" width="250" height= "400" style="padding-bottom : 16px">
+  <p>5. Proses predict dimulai.   </p>
+      <img src="{{url_for('static', filename='image/predict5.png')}}" alt="predict5" width="400" height= "250" style="padding-bottom : 16px">
+  <p>6. Proses predict selesai.   </p>
+      <img src="{{url_for('static', filename='image/predict6.png')}}" alt="predict6" width="400" height= "250" style="padding-bottom : 16px">
+  <p>7. Hasil predict.   </p>
+      <img src="{{url_for('static', filename='image/predict7.png')}}" alt="predict7" width="400" height= "250" style="padding-bottom : 16px">
+  </div>
+</div>
+</div>
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var panel = this.nextElementSibling;
+    if (panel.style.maxHeight){
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    }
+  });
+}
+</script>
+
+{%endblock%}

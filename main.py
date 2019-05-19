@@ -68,5 +68,9 @@ def predict():
         model = os.listdir('instance/model/')
         return render_template('prediksi.html',model=model)
 
+@app.route('/help')
+def help():
+    return render_template('Help.html')
+
 if __name__ == "__main__":
     app.run(debug=True)
