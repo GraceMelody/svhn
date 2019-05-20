@@ -117,7 +117,8 @@ def main(dataset, steps, accuracy,name):
     hook = tf.contrib.estimator.stop_if_higher_hook(svhn_classifier, "accuracy", accuracy)
     train_spec = tf.estimator.TrainSpec(input_fn=train_input_fn, max_steps=steps, hooks=[hook])
     eval_spec = tf.estimator.EvalSpec(input_fn=eval_input_fn)
-    tf.estimator.train_and_evaluate(svhn_classifier, train_spec, eval_spec)
+    result = tf.estimator.train_and_evaluate(svhn_classifier, train_spec, eval_spec)
+    return result
 #   svhn_classifier.train(
 #       input_fn=train_input_fn,
 #       steps=100,

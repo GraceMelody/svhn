@@ -27,7 +27,6 @@ def home():
         nama = request.form['SaveAs']
         path_train_mat = request.files['Latih']
         path_test_mat = request.files['Test']
-
         #load mat file
         load_mat.main(path_train_mat,path_test_mat,float(strength))
         print('done')
@@ -38,9 +37,10 @@ def home():
         counter += 1
         model_name = str(counter)+nama
         #train the model using existing h5 file
-        custom_train.main(path_svhn, int(iterasi),float(akurasi),model_name)
+        result = custom_train.main(path_svhn, int(iterasi),float(akurasi),model_name)
+        accuracy = str("%.2f"%(result[0]["accuracy"]*100))+'%'
         path_train = model_name
-        return jsonify({'train':path_train})
+        return jsonify({'train':path_train,'accuracy':accuracy})
     else :
         return render_template('UI_UAS.html')
 
@@ -61,7 +61,7 @@ def predict():
             data = cnn.main('CNN/test/svhnet')
         else:
             data = cnn.main('instance/model/'+model+'/svhnet')
-        accuracy = str(max(data['probabilities'])*100)+'%'
+        accuracy = str("%.2f"% (max(data['probabilities'])*100))+'%'
         detected = str(data['classes'])
         return jsonify({'class':detected,'accuracy':accuracy})
     else:

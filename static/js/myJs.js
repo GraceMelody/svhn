@@ -1,5 +1,6 @@
 $(document).ready(function() {
   $('#result').hide()
+  $('#resultAcc').hide();
   $('#form-upload').on('submit', function(evt) {
     evt.preventDefault();
     var formData = new FormData($('form')[0]);
@@ -32,6 +33,8 @@ $(document).ready(function() {
         $("#loading_training").hide();
         $('#progressBar').attr('aria-valuenow', '').css('width', '0%').text('0%');
         $('#result').text(data.train);
+        $('#resultAcc').text(data.accuracy);
+        $('#resultAcc').show();
         $('#result').show();
       }
     });
